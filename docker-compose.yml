@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  mysql:
+    container_name: pfa-mysql
+    build: ./mysql
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+  node:
+    container_name: pfa-node
+    build: ./node
+    volumes:
+      - ./node:/usr/src/app
+    depends_on:
+      - mysql
+
+  nginx:
+    container_name: pfa-nginx
+    build: ./nginx
+    ports:
+      - "8000:80"
