@@ -51,3 +51,7 @@ Crie um arquivo README.md especificando quais comandos precisamos executar para 
 ## NGINX
 
 `docker run --network pfa-network -p 8000:80 aferreira44/pfa-nginx`
+
+## Docker Scan for vulnerabilities
+
+`docker scan aferreira44/pfa-node`
