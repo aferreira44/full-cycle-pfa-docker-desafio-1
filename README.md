@@ -8,9 +8,25 @@ Crie um repositório no github com todo o fonte do programa e das imagens gerada
 
 Crie um arquivo README.md especificando quais comandos precisamos executar para que a aplicação funcione recebendo as solicitações na porta 8080 de nosso computador. Lembrando que NÃO utilizaremos Docker-compose nesse desafio.
 
-## How to run
+## How to run without docker-compose
 
-`docker-compse up -d`
+1. Run MySQl container
+
+`docker run -d --network pfa-network --name pfa-mysql aferreira44/pfa-mysql`
+
+2. Run Node app container
+
+`docker run -d --network pfa-network --name pfa-node aferreira44/pfa-node`
+
+3. Run NGINX container
+
+`docker run -d --network pfa-network --name pfa-nginx -p 8080:80 aferreira44/pfa-nginx`
+
+## How to run with docker-compose
+
+`docker-compose up -d`
+
+## Other docker commands just for reference
 
 ### MySQL
 
