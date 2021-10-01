@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 
 const conn = mysql.createConnection({
-    host: 'mysql',
+    host: 'pfa-mysql',
     port: '3306',
     user: 'root',
     password: 'root',
