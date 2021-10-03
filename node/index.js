@@ -1,7 +1,7 @@
 const express = require("express");
 const mysql = require("mysql");
 
-const conn = mysql.createConnection({
+const pool = mysql.createPool({
   host: "pfa-mysql",
   port: "3306",
   user: "root",
@@ -9,18 +9,10 @@ const conn = mysql.createConnection({
   database: "pfa"
 });
 
-conn.connect((err) => {
-  if (err) {
-    console.log("mysql connection error: ", err);
-    return;
-  }
-  console.log("Connected to database");
-});
-
 const app = express();
 
 app.get("/", (_, res) => {
-  conn.query(
+  pool.query(
     "SELECT name, description from modules",
     function (err, results, fields) {
       if (err) {
