@@ -4,6 +4,8 @@ services:
   mysql:
     container_name: pfa-mysql
     build: ./mysql
+    ports:
+      - "3306:3306"
     volumes:
       - ./db_data:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d
@@ -22,4 +24,4 @@ services:
     container_name: pfa-nginx
     build: ./nginx
     ports:
-      - "8000:80"
+      - "8080:80"
