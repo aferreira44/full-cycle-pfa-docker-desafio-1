@@ -24,7 +24,9 @@ services:
       - mysql
 
   nginx:
+    image: nginx:1.9.15-alpine
     container_name: pfa-nginx
-    build: ./nginx
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/
     ports:
       - "8080:80"
