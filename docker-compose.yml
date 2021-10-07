@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 networks:
   pfa-proxy-network:
@@ -22,7 +22,13 @@ services:
     image: node:16.10.0-alpine3.14
     container_name: pfa-node
     working_dir: /usr/src/app
-    command: sh -c "npm install && node index.js"
+    command: sh -c "
+      apk update && apk add wget &&
+      wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz &&
+      tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz &&
+      rm dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz &&
+      dockerize -wait tcp://pfa-mysql:3306 -timeout 50s &&
+      npm install && node index.js"
     volumes:
       - ./node:/usr/src/app
       - /usr/src/app/node_modules
@@ -35,9 +41,12 @@ services:
   nginx:
     image: nginx:1.9.15-alpine
     container_name: pfa-nginx
+    restart: always
     volumes:
       - ./nginx:/etc/nginx/conf.d/
     ports:
-      - "8080:80"
+      - "8000:80"
+    depends_on:
+      - node
     networks:
       - pfa-proxy-network
