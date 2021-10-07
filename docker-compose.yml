@@ -1,4 +1,8 @@
-version: '2'
+version: "2"
+
+networks:
+  pfa-proxy-network:
+  pfa-db-network:
 
 services:
   mysql:
@@ -11,6 +15,8 @@ services:
       - ./mysql:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - pfa-db-network
 
   node:
     image: node:16.10.0-alpine3.14
@@ -22,6 +28,9 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - mysql
+    networks:
+      - pfa-proxy-network
+      - pfa-db-network
 
   nginx:
     image: nginx:1.9.15-alpine
@@ -30,3 +39,5 @@ services:
       - ./nginx:/etc/nginx/conf.d/
     ports:
       - "8080:80"
+    networks:
+      - pfa-proxy-network
